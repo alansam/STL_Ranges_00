@@ -21,6 +21,9 @@
 #include <iomanip>
 #include <ranges>
 #include <vector>
+#include <algorithm>
+
+void use_for_each(void);
 
 auto show = [](auto & container) {
   // Use lazy evaluation to print out the container
@@ -30,6 +33,9 @@ auto show = [](auto & container) {
   std::cout << std::endl;  
 };
 
+/*
+ *  MARK:  main()
+ */
 int main(int argc, char const * argv[]) {
   std::cout << "C++ Version: " << __cplusplus << '\n';
   using std::views::filter,
@@ -45,6 +51,7 @@ int main(int argc, char const * argv[]) {
   auto is_even = [](auto const n) { return n % 2 == 0; };
 
   // Process our dataset
+  //  [looks suspiciously like a Hartmann (CMS/Batch) pipeline.]
   auto results = numbers
     | filter(is_even)
     | transform([](auto n) { return ++n; })
@@ -53,5 +60,29 @@ int main(int argc, char const * argv[]) {
   // Use lazy evaluation to print out the results
   show(results);  // Output: 3 5 7
 
+  use_for_each();
+
   return 0;
+}
+
+/*
+ *  MARK:  use_for_each()
+ *
+ *  @see:  https://stackoverflow.com/questions/3185132/how-to-combine-a-function-and-a-predicate-in-for-each
+ */
+void use_for_each(void) {
+  std::cout << "In fnuction " << __func__ << "()\n";
+
+  namespace ranges = std::ranges;
+
+  std::vector<int> vec = { 1, 2, 3, 4, 5, };
+  show(vec);
+
+  const auto even = [](int i) { return 0 == i % 2; };
+
+  ranges::for_each(vec
+                   | std::views::filter(even),
+                   [](int & i) { i += 1; });
+
+  show(vec);
 }
