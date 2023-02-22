@@ -105,6 +105,7 @@ int main(int argc, char const * argv[]) {
   // Use lazy evaluation to print out the results
   show(results);  // Output: 3 5 7
 #else
+# warning "Missing C++ library feature  std::views"
   std::cout.put('\n');
   std::cout << konst::tiddle << '\n';
   std::cout << "std::views not available to C++ Ver "s << __cplusplus << '\n';
@@ -138,6 +139,7 @@ void use_for_each(void) {
                    | std::views::filter(even),
                    [](int & i) { i += 1; });
 #else
+# warning "Missing C++ library feature std::ranges::for_eech"
   std::cout.put('\n');
   std::cout << konst::tiddle << '\n';
   std::cout << "std::ranges::for_each not available to C++ Ver "s << __cplusplus << '\n';
